@@ -1,3 +1,8 @@
+import pandas as pd
+import numpy as np
+import re
+from bs4 import BeautifulSoup
+
 import os
 import json
 from typing import Dict, List, Optional, Union, cast
@@ -94,3 +99,42 @@ def scrape_github_data() -> List[Dict[str, str]]:
 if __name__ == "__main__":
     data = scrape_github_data()
     json.dump(data, open("data.json", "w"), indent=1)
+    
+
+def get_all_repos(text_file):
+    
+    # Read in the source code as a text string
+    with open(f'{text_file}') as f:
+        source_text = f.read()
+    
+    # Turn the source code string into soup
+    soup = BeautifulSoup(source_text, 'html.parser')
+    
+    # Look through the soup to find each repo name
+    link_list = soup.find_all('h1', class_="f3 text-gray text-normal lh-condensed")
+    
+    # Start an empty list to hold the repos
+    raw_repos = []
+    
+    # Add each repo to repo list
+    for link in link_list:
+        raw_repos.append(link.text)
+    
+    # Look through the repo list to find the cleaned up repo name
+    regexp = r'''
+    (?P<team_name>[^\n\s]*)
+    \n*\s*
+    (?P<sep>\/)
+    \n*\s*
+    (?P<repo_name>[^\n\s].+)\n\n
+    '''
+    
+    # Make a df to handle the formatting of each repo name
+    df = pd.DataFrame(raw_repos, columns=['original'])
+    df = df.original.str.extract(regexp, re.VERBOSE)
+    df['repos'] = '"' + df.team_name + df.sep + df.repo_name +  '"'
+    
+    # Save the formatted repo names as list
+    repos = pd.Series(df.repos)
+    
+    return repos
