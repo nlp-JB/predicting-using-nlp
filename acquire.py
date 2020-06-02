@@ -17,12 +17,6 @@ from env import github_token, github_username
 # TODO: Add your github username to your env.py file under the variable `github_username`
 # TODO: Add more repositories to the `REPOS` list below.
 
-REPOS = [
-    "gocodeup/codeup-setup-script",
-    "gocodeup/movies-application",
-    "torvalds/linux",
-]
-
 headers = {"Authorization": f"token {github_token}", "User-Agent": github_username}
 
 if headers["Authorization"] == "token " or headers["User-Agent"] == "":
@@ -81,7 +75,11 @@ def process_repo(repo: str) -> Dict[str, str]:
     dictionary with the language of the repo and the readme contents.
     """
     contents = get_repo_contents(repo)
-    readme_contents = requests.get(get_readme_download_url(contents)).text
+    readme_downloadurl = get_readme_download_url(contents)
+    if readme_downloadurl == '':
+        readme_contents = None
+    else:
+        readme_contents = requests.get(get_readme_download_url(contents)).text
     return {
         "repo": repo,
         "language": get_repo_language(repo),
@@ -89,10 +87,11 @@ def process_repo(repo: str) -> Dict[str, str]:
     }
 
 
-def scrape_github_data() -> List[Dict[str, str]]:
+def scrape_github_data(text_file) -> List[Dict[str, str]]:
     """
     Loop through all of the repos and process them. Returns the processed data.
     """
+    REPOS = get_all_repos(text_file)
     return [process_repo(repo) for repo in REPOS]
 
 
@@ -104,7 +103,7 @@ if __name__ == "__main__":
 def get_all_repos(text_file):
     
     # Read in the source code as a text string
-    with open(f'{text_file}') as f:
+    with open(f'{text_file}.txt') as f:
         source_text = f.read()
     
     # Turn the source code string into soup
@@ -132,9 +131,9 @@ def get_all_repos(text_file):
     # Make a df to handle the formatting of each repo name
     df = pd.DataFrame(raw_repos, columns=['original'])
     df = df.original.str.extract(regexp, re.VERBOSE)
-    df['repos'] = '"' + df.team_name + df.sep + df.repo_name +  '"'
+    df['repos'] = df.team_name + df.sep + df.repo_name
     
     # Save the formatted repo names as list
-    repos = pd.Series(df.repos)
+    repos = pd.Series(df.repos).tolist()
     
     return repos
