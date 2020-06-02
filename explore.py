@@ -16,32 +16,36 @@ def make_initial_df(text_file):
     return df
 
 def add_new_columns(df):
-    # turn word strings into a list of words
-    tokenizer = nltk.tokenize.ToktokTokenizer()
-    df['num_words'] = df.clean_lemmatized.apply(lambda x: len(tokenizer.tokenize(x)))
-    df['num_unique_words'] = df.clean_lemmatized.apply(lambda x: len(set(tokenizer.tokenize(x))))
-    # Count the number of links in each readme
-    df['link_counts'] = df.readme_contents.str.count(r'https*')
+    # add generalized language column
+    df['gen_language'] = np.where(df.language == 'Python', 'Python',
+                             np.where(df.language == 'JavaScript', 'JavaScript',
+                                     np.where(df.language == 'Jupyter Notebook', 'Jupyter Notebook', 'other')))
     # Add column of text without numbers
     df['without_numbers']= df['clean_lemmatized'].str.lower().replace(r'(?<![A-Za-z0-9])[0-9]+', '')
+    # turn word strings into a list of words
+    tokenizer = nltk.tokenize.ToktokTokenizer()
+    df['num_words'] = df.without_numbers.apply(lambda x: len(tokenizer.tokenize(x)))
+    df['num_unique_words'] = df.without_numbers.apply(lambda x: len(set(tokenizer.tokenize(x))))
+    # Count the number of links in each readme
+    df['link_counts'] = df.readme_contents.str.count(r'https*')
     # Add column with count of .py files
     df['py_extensions'] = df.clean_lemmatized.str.count(r'py\b')
     # Add column with count of .js files
-    df['js_extenstions'] = df.clean_lemmatized.str.count(r'js\b')
+    df['js_extensions'] = df.clean_lemmatized.str.count(r'js\b')
     # Add column with count of .ipynb files
-    df['ipynb_extenstions'] = df.clean_lemmatized.str.count(r'ipynb\b')
+    df['ipynb_extensions'] = df.clean_lemmatized.str.count(r'ipynb\b')
     
     return df
     
     
 def make_word_counts_df(df):
     # Turn all words from each category into a single string
-    python_words = ' '.join(df[df.language == 'Python'].clean_lemmatized)
-    java_words = ' '.join(df[df.language == 'JavaScript'].clean_lemmatized)
-    jupyter_words = ' '.join(df[df.language == 'Jupyter Notebook'].clean_lemmatized)
+    python_words = ' '.join(df[df.language == 'Python'].without_numbers)
+    java_words = ' '.join(df[df.language == 'JavaScript'].without_numbers)
+    jupyter_words = ' '.join(df[df.language == 'Jupyter Notebook'].without_numbers)
     other_words = ' '.join(df[(df.language != 'Jupyter Notebook') 
-                              & (df.language != 'Python') & (df.language != 'JavaScript')].clean_lemmatized)
-    all_words = ' '.join(df.clean_lemmatized)
+                              & (df.language != 'Python') & (df.language != 'JavaScript')].without_numbers)
+    all_words = ' '.join(df.without_numbers)
     
     # tokenize the words, then count them
     tokenizer = nltk.tokenize.ToktokTokenizer()
@@ -63,8 +67,10 @@ def make_word_counts_df(df):
 
 def make_vectorized_df(df):
     tfidf = TfidfVectorizer()
-    tfidfs = tfidf.fit_transform(df.clean_lemmatized)
+    tfidfs = tfidf.fit_transform(df.without_numbers)
     vectorized_df = pd.DataFrame(tfidfs.todense(), columns=tfidf.get_feature_names())
     # add caluclulated features to vectorized_df
-    vectorized_df = vectorized_df.join(df[['link_counts', 'num_words', 'num_unique_words']], how='left')
+    vectorized_df = vectorized_df.join(df[[
+        'num_words', 'num_unique_words', 'link_counts', 'py_extensions',
+        'js_extensions', 'ipynb_extensions']], how='left')
     return vectorized_df
