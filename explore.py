@@ -20,6 +20,16 @@ def add_new_columns(df):
     tokenizer = nltk.tokenize.ToktokTokenizer()
     df['num_words'] = df.clean_lemmatized.apply(lambda x: len(tokenizer.tokenize(x)))
     df['num_unique_words'] = df.clean_lemmatized.apply(lambda x: len(set(tokenizer.tokenize(x))))
+    # Count the number of links in each readme
+    df['link_counts'] = df.readme_contents.str.count(r'https*')
+    # Add column of text without numbers
+    df['without_numbers']= df['clean_lemmatized'].str.lower().replace(r'(?<![A-Za-z0-9])[0-9]+', '')
+    # Add column with count of .py files
+    df['py_extensions'] = df.clean_lemmatized.str.count(r'py\b')
+    # Add column with count of .js files
+    df['js_extenstions'] = df.clean_lemmatized.str.count(r'js\b')
+    # Add column with count of .ipynb files
+    df['ipynb_extenstions'] = df.clean_lemmatized.str.count(r'ipynb\b')
     
     return df
     
@@ -56,5 +66,5 @@ def make_vectorized_df(df):
     tfidfs = tfidf.fit_transform(df.clean_lemmatized)
     vectorized_df = pd.DataFrame(tfidfs.todense(), columns=tfidf.get_feature_names())
     # add caluclulated features to vectorized_df
-    vectorized_df = vectorized_df.join(df[['link_counts', 'number_of_words', 'num_unique_words']], how='left')
+    vectorized_df = vectorized_df.join(df[['link_counts', 'num_words', 'num_unique_words']], how='left')
     return vectorized_df

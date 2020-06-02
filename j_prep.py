@@ -111,10 +111,10 @@ def prep_readme_data(df):
     # Remove stopwords from Lemmatized readme content
     df = remove_stopwords(df, 'lemmatized')
 
-    # Count the number of links in each readme
-    df['link_counts'] = df.readme_contents.str.count(r'https*')
-    df['without_numbers']= df['clean_lemmatized'].str.lower().replace(r'(?<![A-Za-z0-9])[0-9]+', '')
-    df['py_extensions'] = df.clean_lemmatized.str.count(r'py\b')
-    df['js_extenstions'] = df.clean_lemmatized.str.count(r'js\b')
+    # # Count the number of links in each readme
+    # df['link_counts'] = df.readme_contents.str.count(r'https*')
+    # df['without_numbers']= df['clean_lemmatized'].str.lower().replace(r'(?<![A-Za-z0-9])[0-9]+', '')
+    # df['py_extensions'] = df.clean_lemmatized.str.count(r'py\b')
+    # df['js_extenstions'] = df.clean_lemmatized.str.count(r'js\b')
     
     return df
