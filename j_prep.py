@@ -90,7 +90,7 @@ def remove_stopwords(df, col):
     return df
 
 
-def prep_article_data(df):
+def prep_readme_data(df):
     '''
     This function takes in the news articles df and
     returns the df with original columns plus cleaned
