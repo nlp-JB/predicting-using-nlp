@@ -19,6 +19,7 @@ def basic_clean(df):
     passed column text normalized.
     '''
     df['basic_clean'] = df['readme_contents'].str.lower()\
+                    .replace(r'\<(.*?)\>','', regex = True)\
                     .replace(r'[^\w\s]', '', regex=True)\
                     .str.normalize('NFKC')\
                     .str.encode('ascii', 'ignore')\
@@ -67,6 +68,8 @@ def lemmatize(df, col):
     
     # Join the cleaned and lemmatized tokens back into sentences
     df['lemmatized'] = lemmas.str.join(' ')
+    df['lemmatized']= df['lemmatized'].replace(r'&#9','', regex = True)
+    df['lemmatized']= df['lemmatized'].replace(r';','', regex = True)
     return df
 
 
