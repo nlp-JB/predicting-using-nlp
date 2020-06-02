@@ -112,6 +112,6 @@ def prep_readme_data(df):
     df = remove_stopwords(df, 'lemmatized')
 
     # Count the number of links in each readme
-    df['link_counts'] = df.readme_contents.str.count(r'https*').sum()
+    df['link_counts'] = df.readme_contents.str.count(r'https*')
     
     return df
