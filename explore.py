@@ -171,4 +171,10 @@ def aggregate_columns(df):
                         'support', 'supported', 'usage', 'use', 'used', 'useful', 'using', 'work', 'working']
 
     df = df.drop(labels=replaced_columns, axis=1)
+    
+    df['politeness'] = (df['please'] + df['thank'] + df['thankful'] 
+                        + df['thanks'] + df['thanksspecialthanksto']
+                        + df['thanksthanks'] + df['grateful'] 
+                        + df['gratefully'] + df['gratitude'])
+    
     return df
