@@ -137,3 +137,38 @@ def prep_vectorized_df(df, vectorized_df):
     X_test_reduced = X_test_scaled[reduced_list]
 
     return X_train_reduced, X_test_reduced
+
+def aggregate_columns(df):
+    df['numbers'] = df['10'] + df['100'] + df['36']
+    df['add+'] = df['add'] + df['additional']
+    df['build+'] = df['build'] + df['building'] + df['built']
+    df['contribute+'] = df['contribute'] + df['contributing'] + df['contributor']
+    df['create+'] = df['create'] + df['created'] + df['creating']
+    df['design+'] = df['design'] + df['designed']
+    df['developed+'] = df['developed'] + df['developer'] + df['development']
+    df['distributed+'] = df['distributed'] + df['distribution']
+    df['follow+'] = df['follow'] + df['following']
+    df['get+'] = df['get'] + df['getting']
+    df['git+'] = df['git'] + df['github']
+    df['install+'] = df['install'] + df['installation'] + df['installed'] + df['installing']
+    df['provide+'] = df['provided'] + df['provides']
+    df['recommend+'] = df['recommend'] + df['recommended']
+    df['release+'] = df['release'] + df['released']
+    df['require+'] = df['required'] + df['requirement'] + df['requires']
+    df['run+'] = df['run'] + df['running']
+    df['start+'] = df['start'] + df['started']
+    df['support+'] = df['support'] + df['supported']
+    df['use+'] = df['usage'] + df['use'] + df['used'] + df['useful'] + df['using']
+    df['work+'] = df['work'] + df['working']
+
+    replaced_columns = ['10', '100', '36', 'add', 'additional', 'build', 'building', 'built',
+                        'contribute', 'contributing', 'contributor', 'create', 'created', 
+                        'creating', 'design', 'designed', 'developed', 'developer', 'development', 
+                        'distributed', 'distribution', 'follow', 'following', 'get', 'getting', 
+                        'git', 'github', 'install', 'installation', 'installed', 'installing', 
+                        'provided', 'provides', 'recommend', 'recommended', 'release', 'released',  
+                        'required', 'requirement', 'requires', 'run', 'running', 'start', 'started', 
+                        'support', 'supported', 'usage', 'use', 'used', 'useful', 'using', 'work', 'working']
+
+    df = df.drop(labels=replaced_columns, axis=1)
+    return df
