@@ -71,8 +71,7 @@ def knn_classifier(X_train, X_test, y_train, y_test):
 
 
 def make_predictions_df(df, vectorized_df):
-
-    X_train, X_test, y_train, y_test, train_predictions, test_predictions = get_splits(df, vectorized_df)
+    mm_scaler, X_train, X_test, y_train, y_test, train_predictions, test_predictions = explore.get_splits(df, vectorized_df)
 
 
     # Add baseline to predictions dataframe

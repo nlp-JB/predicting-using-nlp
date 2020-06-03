@@ -124,12 +124,12 @@ def get_splits(df, vectorized_df):
     test_predictions = pd.DataFrame(dict(actual=y_test))
 
     # Scale data
-    scaler, X_train_scaled, X_test_scaled = min_max_scaler(X_train, X_test)
+    mm_scaler, X_train_scaled, X_test_scaled = min_max_scaler(X_train, X_test)
 
-    return scaler, X_train_scaled, X_test_scaled, y_train, y_test, train_predictions, test_predictions
+    return X_train_scaled, X_test_scaled, y_train, y_test, train_predictions, test_predictions
 
 def prep_vectorized_df(df, vectorized_df):
-    scaler, X_train_scaled, X_test_scaled, y_train, y_test, train_predictions, test_predictions = get_splits(df, vectorized_df)
+    X_train_scaled, X_test_scaled, y_train, y_test, train_predictions, test_predictions = get_splits(df, vectorized_df)
 
     # drop all columns with an average of < 5% tfidf value
     X_train_reduced = X_train_scaled[X_train_scaled.columns[X_train_scaled.mean() > .05]]
@@ -138,7 +138,7 @@ def prep_vectorized_df(df, vectorized_df):
     reduced_list = X_train_reduced.columns.tolist()
     X_test_reduced = X_test_scaled[reduced_list]
 
-    return X_train_reduced, X_test_reduced
+    return X_train_scaled, X_test_scaled, X_train_reduced, X_test_reduced
 
 def aggregate_columns(df):
     df['numbers'] = df['10'] + df['100'] + df['36']
@@ -202,8 +202,17 @@ def bin_word_counts(df):
     df['word_bins'] = pd.cut(df['num_words'], bins=cut_bins, labels=cut_labels)
     return df
 
-def chi_2_links(df):
-    observed = pd.crosstab(df.gen_language, df.link_bins)
+def chi_2_links(df, vectorized_df):
+
+    X = vectorized_df
+    y = df.gen_language
+    #Split dataframe into train and test
+    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=.3, random_state = 123)
+
+    # Scale data
+    scaler, X_train_scaled, X_test_scaled = min_max_scaler(X_train, X_test)
+    
+    observed = pd.crosstab(X_train_scaled.gen_language, y_train.link_bins)
     chi2, p, degf, expected = stats.chi2_contingency(observed)
 
     print('Observed\n')
@@ -215,7 +224,10 @@ def chi_2_links(df):
     print(f'p     = {p:.4f}')
 
 def chi_2_words(df):
-    observed = pd.crosstab(df.gen_language, df.word_bins)
+
+    #Split dataframe into train and test
+    train, test = train_test_split(df, test_size=.3, random_state = 123)
+    observed = pd.crosstab(train.gen_language, train.word_bins)
     chi2, p, degf, expected = stats.chi2_contingency(observed)
 
     print('Observed\n')
