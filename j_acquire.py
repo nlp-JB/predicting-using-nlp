@@ -144,3 +144,12 @@ def get_all_repos(text_file):
     repos = pd.Series(df.repos).tolist()
     
     return repos
+
+def create_large_df(list):
+    big_df = pd.DataFrame()
+    for text_file in list:
+        temp_df = scrape_github_data(f'{text_file}')
+        temp_df = pd.DataFrame.from_dict(temp_df).dropna().reset_index(drop=True)
+        big_df = big_df.append(temp_df, ignore_index=True)
+    
+    return big_df
