@@ -178,3 +178,24 @@ def aggregate_columns(df):
                         + df['gratefully'] + df['gratitude'])
     
     return df
+
+def bin_link_counts(df):
+    '''
+    Takes in a df and returns it with a column showing if the
+    number of links is small, medium or large
+    '''
+    cut_labels = ['small', 'medium', 'large']
+    cut_bins = [0, 45, 100, 800]
+    df['link_bins'] = pd.cut(df['link_counts'], bins=cut_bins, labels=cut_labels)
+    df['link_bins'].fillna('small', inplace = True) 
+    return df
+
+def bin_word_counts(df):
+    '''
+    Takes in a df and returns it with a column showing if the
+    number of words is small, medium or large
+    '''
+    cut_labels = ['small', 'medium', 'large']
+    cut_bins = [0, 1600, 2200, 9000]
+    df['word_bins'] = pd.cut(df['num_words'], bins=cut_bins, labels=cut_labels)
+    return df
