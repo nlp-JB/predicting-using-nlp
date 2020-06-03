@@ -69,7 +69,7 @@ def knn_classifier(X_train, X_test, y_train, y_test):
     '''
 
     # Create and fit the model on the train and test data
-    knn = KNeighborsClassifier(n_neighbors=5, weights='uniform')
+    knn = KNeighborsClassifier(n_neighbors=3, weights='uniform')
     knn.fit(X_train, y_train)
     # Create predictions
     train_knn_predictions = knn.predict(X_train)
@@ -116,6 +116,50 @@ def make_predictions_df(df, vectorized_df):
     return train_predictions, test_predictions
 
 
-# def evaluate():
-#     # Print accuracy score
+def train_evaluation(train_predictions):
+    # Logistic regression accuracy score, confustion matrix, classification report for train data
+    print('Evaluation Metrics for Logistic Regression Model')
+    print()
+    print()
+    print('Accuracy: {:.2%}'.format(accuracy_score(train_predictions.actual, train_predictions.lr_predictions)))
+    print('----------------------------------------------------------------------------------------------')
+    print('Confusion Matrix')
+    print(pd.crosstab(train_predictions.lr_predictions, train_predictions.actual))
+    print('----------------------------------------------------------------------------------------------')
+    print(classification_report(train_predictions.actual, train_predictions.lr_predictions))
+
+    print()
+    print()
+    print()
+    print()
+    print()
+
+    # Random Forest accuracy score, confustion matrix, classification report for train data
+    print('Evaluation Metrics for Random Forest Model')
+    print()
+    print()
+    print('Accuracy: {:.2%}'.format(accuracy_score(train_predictions.actual, train_predictions.rf_predictions)))
+    print('----------------------------------------------------------------------------------------------')
+    print('Confusion Matrix')
+    print(pd.crosstab(train_predictions.rf_predictions, train_predictions.actual))
+    print('----------------------------------------------------------------------------------------------')
+    print(classification_report(train_predictions.actual, train_predictions.rf_predictions))
+
+    print()
+    print()
+    print()
+    print()
+    print()
+    
+
+    # K Nearest Neighbors accuracy score, confustion matrix, classification report for train data
+    print('Evaluation Metrics for K Nearest Nerighbors Model')
+    print()
+    print()
+    print('Accuracy: {:.2%}'.format(accuracy_score(train_predictions.actual, train_predictions.knn_predictions)))
+    print('----------------------------------------------------------------------------------------------')
+    print('Confusion Matrix')
+    print(pd.crosstab(train_predictions.knn_predictions, train_predictions.actual))
+    print('----------------------------------------------------------------------------------------------')
+    print(classification_report(train_predictions.actual, train_predictions.knn_predictions))
 
