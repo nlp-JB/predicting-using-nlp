@@ -6,6 +6,8 @@ import nltk
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
+from math import sqrt
+from scipy import stats
 
 
 import j_acquire
@@ -199,3 +201,28 @@ def bin_word_counts(df):
     cut_bins = [0, 1600, 2200, 9000]
     df['word_bins'] = pd.cut(df['num_words'], bins=cut_bins, labels=cut_labels)
     return df
+
+def chi_2_links(df):
+    observed = pd.crosstab(df.gen_language, df.link_bins)
+    chi2, p, degf, expected = stats.chi2_contingency(observed)
+
+    print('Observed\n')
+    print(observed.values)
+    print('---\nExpected\n')
+    print(expected)
+    print('---\n')
+    print(f'chi^2 = {chi2:.4f}')
+    print(f'p     = {p:.4f}')
+
+def chi_2_words(df):
+    observed = pd.crosstab(df.gen_language, df.word_bins)
+    chi2, p, degf, expected = stats.chi2_contingency(observed)
+
+    print('Observed\n')
+    print(observed.values)
+    print('---\nExpected\n')
+    print(expected)
+    print('---\n')
+    print(f'chi^2 = {chi2:.4f}')
+    print(f'p     = {p:.4f}')
+    
