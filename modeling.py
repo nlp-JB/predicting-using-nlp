@@ -9,15 +9,7 @@ from sklearn.neighbors import KNeighborsClassifier
 import explore
 
 
-def get_splits(df, vectorized_df):
-    X = vectorized_df
-    y = df.gen_language
-    #Split dataframe into train and test
-    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=.2, random_state = 123)
-    train_predictions = pd.DataFrame(dict(actual=y_train))
-    test_predictions = pd.DataFrame(dict(actual=y_test))
 
-    return X_train, X_test, y_train, y_test, train_predictions, test_predictions
 
 
 def logistic_regression(X_train, X_test, y_train, y_test):

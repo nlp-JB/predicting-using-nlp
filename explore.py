@@ -5,6 +5,7 @@ import nltk
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
 
 
 import j_acquire
@@ -95,6 +96,8 @@ def make_vectorized_df(df):
     vectorized_df = vectorized_df.join(df[[
         'num_words', 'num_unique_words', 'link_counts', 'py_extensions',
         'js_extensions', 'ipynb_extensions']], how='left')
+
+    
     return vectorized_df
 
 def min_max_scaler(train, test):
@@ -108,3 +111,29 @@ def min_max_scaler(train, test):
     train_scaled_mm = pd.DataFrame(mm_scaler.transform(train), columns=train.columns.values).set_index([train.index.values])
     test_scaled_mm = pd.DataFrame(mm_scaler.transform(test), columns=test.columns.values).set_index([test.index.values])
     return mm_scaler, train_scaled_mm, test_scaled_mm
+
+
+def get_splits(df, vectorized_df):
+    X = vectorized_df
+    y = df.gen_language
+    #Split dataframe into train and test
+    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=.3, random_state = 123)
+    train_predictions = pd.DataFrame(dict(actual=y_train))
+    test_predictions = pd.DataFrame(dict(actual=y_test))
+
+    # Scale data
+    scaler, X_train_scaled, X_test_scaled = min_max_scaler(X_train, X_test)
+
+    return scaler, X_train_scaled, X_test_scaled, y_train, y_test, train_predictions, test_predictions
+
+def prep_vectorized_df(df, vectorized_df):
+    scaler, X_train_scaled, X_test_scaled, y_train, y_test, train_predictions, test_predictions = get_splits(df, vectorized_df)
+
+    # drop all columns with an average of < 5% tfidf value
+    X_train_reduced = X_train_scaled[X_train_scaled.columns[X_train_scaled.mean() > .05]]
+    
+    # make X_test have the same coluns as X_train
+    reduced_list = X_train_reduced.columns.tolist()
+    X_test_reduced = X_test_scaled[reduced_list]
+
+    return X_train_reduced, X_test_reduced
