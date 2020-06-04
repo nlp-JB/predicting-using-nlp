@@ -43,7 +43,7 @@ def random_forest_classifier(X_train, X_test, y_train):
                             criterion='gini',
                             min_samples_leaf=3,
                             n_estimators=100,
-                            max_depth=3, 
+                            max_depth=10, 
                             random_state=123)
     rf.fit(X_train, y_train)
     
@@ -62,7 +62,7 @@ def knn_classifier(X_train, X_test, y_train):
     '''
 
     # Create and fit the model on the train and test data
-    knn = KNeighborsClassifier(n_neighbors=3, weights='uniform')
+    knn = KNeighborsClassifier(n_neighbors=2, weights='uniform')
     knn.fit(X_train, y_train)
     
     # Create predictions
@@ -71,6 +71,11 @@ def knn_classifier(X_train, X_test, y_train):
 
     return train_knn_predictions, test_knn_predictions
 
+#######################
+#                     #
+# Prediction Function #
+#                     #
+#######################
 
 def make_predictions_df(X_train, X_test, y_train, train_predictions, test_predictions):
 
@@ -101,6 +106,11 @@ def make_predictions_df(X_train, X_test, y_train, train_predictions, test_predic
 
     return train_predictions, test_predictions
 
+#######################
+#                     #
+# Evaluation Function #
+#                     #
+#######################
 
 def train_evaluation(train_predictions):
     # Logistic regression accuracy score, confustion matrix, classification report for train data
