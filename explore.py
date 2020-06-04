@@ -202,8 +202,9 @@ def bin_word_counts(df):
 
 def chi_2_links(df):
 
-    
-    observed = pd.crosstab(df.gen_language, df.link_bins)
+    #Split dataframe into train and test
+    train, test = train_test_split(df, test_size=.3, random_state = 123)
+    observed = pd.crosstab(train.gen_language, train.link_bins)
     chi2, p, degf, expected = stats.chi2_contingency(observed)
 
     print('Observed\n')
@@ -218,7 +219,7 @@ def chi_2_words(df):
 
     #Split dataframe into train and test
     train, test = train_test_split(df, test_size=.3, random_state = 123)
-    observed = pd.crosstab(df.gen_language, df.word_bins)
+    observed = pd.crosstab(train.gen_language, train.word_bins)
     chi2, p, degf, expected = stats.chi2_contingency(observed)
 
     print('Observed\n')

@@ -8,10 +8,10 @@
 
 # Executive Summary
 ### Key Takeaways
--  
-- We successfully created a model that performed better than our innitial baseline
+- We successfully created a model that performed better than our initial baseline
 - Ultimately our best model performed at 57% on test data
-- Additionaly, we provided a function that takes in a repo and predicts the programming language 
+- Additionally, we provided a function that takes in a repo and predicts the programming language 
+- The key to an improved model is noise reduction
 
 # Data Dictionary
 
@@ -34,7 +34,7 @@
 # Pipeline 
 ## Aquisition
 - We chose to look at 12 topics and scrape the readme files of the 30 most starred repos in each topic.
-- >  Topics:
+- Topics:
 1. algorithm
 2. bots
 3. data-visualization
@@ -104,7 +104,10 @@ The team chose three classification models to work with:
 - Beautiful Soup
 - Natural Language Toolkit
 - Regex
-- SKleanr
+- SKlearn
+- Canva
+- Matplotlib
+- Stats
 
 
 **Note: To reproduce this you will need your own env.py file generating the URL to access the SQL server. All other modules and functions are included in the repository.**
