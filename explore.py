@@ -200,17 +200,10 @@ def bin_word_counts(df):
     df['word_bins'] = pd.cut(df['num_words'], bins=cut_bins, labels=cut_labels)
     return df
 
-def chi_2_links(df, vectorized_df):
+def chi_2_links(df):
 
-    X = vectorized_df
-    y = df.gen_language
-    #Split dataframe into train and test
-    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=.3, random_state = 123)
-
-    # Scale data
-    scaler, X_train_scaled, X_test_scaled = min_max_scaler(X_train, X_test)
     
-    observed = pd.crosstab(X_train_scaled.gen_language, y_train.link_bins)
+    observed = pd.crosstab(df.gen_language, df.link_bins)
     chi2, p, degf, expected = stats.chi2_contingency(observed)
 
     print('Observed\n')
@@ -225,7 +218,7 @@ def chi_2_words(df):
 
     #Split dataframe into train and test
     train, test = train_test_split(df, test_size=.3, random_state = 123)
-    observed = pd.crosstab(train.gen_language, train.word_bins)
+    observed = pd.crosstab(df.gen_language, df.word_bins)
     chi2, p, degf, expected = stats.chi2_contingency(observed)
 
     print('Observed\n')
