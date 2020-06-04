@@ -196,7 +196,3 @@ def test_evaluation(test_predictions):
     print()
     print()
     print()
-
-
-def predict_language():
-    repo = 
