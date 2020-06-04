@@ -65,7 +65,7 @@ We also added a number of new features to make modeling easier.
 
 This file can be saved as a .csv for easy access and to save time.
 
-**The data was then split and scaled using libraries from SKlearn. Random seeds were set for reproducibility. 
+**The data was then split and scaled using libraries from SKlearn. Random seeds were set for reproducibility.**
 ### Hypothesis testing
 
 - We formed two crucial hypothises early on. The first is based on the number of links present in a readme. We Thought that perhaps more popular languages had more reference materials that made thier way into readme contents.
