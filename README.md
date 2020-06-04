@@ -110,7 +110,7 @@ The team chose three classification models to work with:
 - Stats
 
 
-**Note: To reproduce this you will need your own env.py file generating the URL to access the SQL server. All other modules and functions are included in the repository.**
+**Note: To reproduce this notebook you will need your own env.py file storing your github username and unique github personal access token. Clone the repo. All other modules, functions and text files are included in the repository.**
 
 To view our presentation of this project, [click here](https://www.canva.com/design/DAD-GzRcYlA/sIfOlRBWbqHXU96QWgMvlQ/view?utm_content=DAD-GzRcYlA&utm_campaign=designshare&utm_medium=link&utm_source=sharebutton)
 
