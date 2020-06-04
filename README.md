@@ -15,22 +15,38 @@
 
 # Data Dictionary
 
+| Feature          | Count/Datatype        | Description                                                                          |
+|------------------|-----------------------|--------------------------------------------------------------------------------------|
+| repo             | 298 non-null          | name of the repository                                                               |
+| language         | 298 non-null          | primary language of the repository                                                   |
+| gen_language     | 298 non-null          | aggregation of miscellaneous programing languages into a label called "other"        |
+| readme_contents  | 298 non-null          | text present in readme file                                                          |
+| num_words        | 298 non-null int64    | count of words in each readme                                                        |
+| link_counts      | 298 non-null int64    | count of links in each readme                                                        |
+| py_extensions    | 298 non-null int64    | count of .py file extensions in each readme                                          |
+| js_extensions    | 298 non-null int64    | count of .js file extensions in each readme                                          |
+| ipynb_extensions | 298 non-null int64    | count of .ipynb file extensions in each readme                                       |
+| link_bins        | 298 non-null category | bins of number of links into "small", "medium", and "large"                          |
+| word_bins        | 298 non-null category | bins of number of words into "small", "medium", and "large"                          |
+| + columns        | 298 non-null object   | any column with a "+" afterwards is an aggregation of words similar to the root word |
+| politeness       | 298 non-null object   | aggregation of words pertaining to politeness                                        |
+
 # Pipeline 
 ## Aquisition
 - We chose to look at 12 topics and scrape the readme files of the 30 most starred repos in each topic.
 - >  Topics:
-    1. algorithm
-    2. bots
-    3. data-visualization
-    4. deep_learning
-    5. javascript
-    6. jupyter_notebook
-    7. machine_learning
-    8. nlp
-    9. python
-    10. repo_source
-    11. testing
-    12. Covid19
+1. algorithm
+2. bots
+3. data-visualization
+4. deep_learning
+5. javascript
+6. jupyter_notebook
+7. machine_learning
+8. nlp
+9. python
+10. repo_source
+11. testing
+12. Covid19
 
 - We saved the source code of each topic page into a text file for future use and to avoid any access issues. 
 - Our `create_large_df` function scrapes the repo names from each text file.
