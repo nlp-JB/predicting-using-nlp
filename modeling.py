@@ -160,16 +160,34 @@ def train_evaluation(train_predictions):
     print(classification_report(train_predictions.actual, train_predictions.knn_predictions))
 
 def test_evaluation(test_predictions):
-    # Logistic regression accuracy score, confustion matrix, classification report for test data
-    print('Evaluation Metrics for Logistic Regression Model')
+    # Random Forest accuracy score, confustion matrix, classification report for train data
+    print('Evaluation Metrics for Random Forest Model')
     print()
     print()
-    print('Accuracy: {:.2%}'.format(accuracy_score(test_predictions.actual, test_predictions.lr_predictions)))
+    print('Accuracy: {:.2%}'.format(accuracy_score(test_predictions.actual, test_predictions.rf_predictions)))
     print('----------------------------------------------------------------------------------------------')
     print('Confusion Matrix')
-    print(pd.crosstab(test_predictions.lr_predictions, test_predictions.actual))
+    print(pd.crosstab(test_predictions.rf_predictions, test_predictions.actual))
     print('----------------------------------------------------------------------------------------------')
-    print(classification_report(test_predictions.actual, test_predictions.lr_predictions))
+    print(classification_report(test_predictions.actual, test_predictions.rf_predictions))
+
+    print()
+    print()
+    print()
+    print()
+    print()
+
+
+    # Random Forest accuracy score, confustion matrix, classification report for train data
+    print('Evaluation Metrics for Baseline model')
+    print()
+    print()
+    print('Accuracy: {:.2%}'.format(accuracy_score(test_predictions.actual, test_predictions.baseline)))
+    print('----------------------------------------------------------------------------------------------')
+    print('Confusion Matrix')
+    print(pd.crosstab(test_predictions.baseline, test_predictions.actual))
+    print('----------------------------------------------------------------------------------------------')
+    print(classification_report(test_predictions.actual, test_predictions.baseline))
 
     print()
     print()
