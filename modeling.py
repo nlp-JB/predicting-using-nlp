@@ -7,6 +7,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 
 import explore
+import j_acquire
+import j_prep
 
 ######################
 #                    #
@@ -196,3 +198,5 @@ def test_evaluation(test_predictions):
     print()
 
 
+def predict_language():
+    repo = 
