@@ -33,7 +33,7 @@
 
 # Pipeline 
 ## Aquisition
-- We chose to look at 12 topics and scrape the readme files of the 30 most starred repos in each topic.
+- We chose to look at 11 topics and scrape the readme files of the 30 most starred repos in each topic.
 - Topics:
 1. algorithm
 2. bots
@@ -44,9 +44,9 @@
 7. machine_learning
 8. nlp
 9. python
-10. repo_source
+10. Covid19
 11. testing
-12. Covid19
+
 
 - We saved the source code of each topic page into a text file for future use and to avoid any access issues. 
 - Our `create_large_df` function scrapes the repo names from each text file.
