@@ -92,6 +92,7 @@ The team chose three classification models to work with:
 - For the purposes of this project, we chose the model that produced the highest accuracy as we wanted to maximize predicting the right language when so many others are present in the corpus.
 
  > -  *Our __best__ performing model on training data was the Random Forest Model with 95% accuray and it was deployed on the test data. Final model performance was 57% accuracy.*
+ > - *That's a 90% improvement over the baseline model!*
 
 ## Conclusion
 - The model struggled to predict programming languages that appeared less frequently in our corpus of documents. 
